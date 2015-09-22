@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'fractal_dialog.ui'
+#
+# Created by: PyQt5 UI code generator 5.5
+#
+# WARNING! All changes made in this file will be lost!
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication
+class Ui_Dialog(object):
+    
+	def setupUi(self, Dialog):
+		Dialog.setObjectName("Dialog")
+		Dialog.resize(341, 232)
+		
+		self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+		self.buttonBox.setGeometry(QtCore.QRect(90, 190, 161, 32))
+		self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+		self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|
+				QtWidgets.QDialogButtonBox.Ok)
+		self.buttonBox.setObjectName("buttonBox")
+		
+		self.comboBox = QtWidgets.QComboBox(Dialog)
+		self.comboBox.setGeometry(QtCore.QRect(210, 130, 69, 22))
+		self.comboBox.setObjectName("comboBox")
+		self.comboBox.addItem("")
+		self.comboBox.addItem("")
+		self.comboBox.addItem("")
+		self.comboBox.addItem("")
+		
+		self.fractal_label = QtWidgets.QLabel(Dialog)
+		self.fractal_label.setGeometry(QtCore.QRect(20, 20, 171, 151))
+		self.fractal_label.setObjectName("fractal_label")
+		
+		self.zoom_label = QtWidgets.QLabel(Dialog)
+		self.zoom_label.setGeometry(QtCore.QRect(210, 100, 101, 41))
+		self.zoom_label.setObjectName("zoom_label")
+
+		self.retranslateUi(Dialog)
+		self.buttonBox.accepted.connect(Dialog.accept)
+		self.buttonBox.rejected.connect(Dialog.reject)
+		QtCore.QMetaObject.connectSlotsByName(Dialog)
+		self.show()
+	
+	def retranslateUi(self, Dialog):
+		_translate = QtCore.QCoreApplication.translate
+		Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+		self.comboBox.setItemText(0, _translate("Dialog", "2"))
+		self.comboBox.setItemText(1, _translate("Dialog", "5"))
+		self.comboBox.setItemText(2, _translate("Dialog", "10"))
+		self.comboBox.setItemText(3, _translate("Dialog", "100"))
+		self.fractal_label.setText(_translate("Dialog", "fractal"))
+		self.zoom_label.setText(_translate("Dialog", "Zoom"))
+
+
+if __name__ == '__main__':
+
+	app = QApplication(sys.argv)
+	c = Ui_Dialog()
+	sys.exit(app.exec_())

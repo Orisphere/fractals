@@ -1,0 +1,14 @@
+Parse function (Keyboard input?)=>function class?
+
+Generate fractal into parameter file
+
+Turn parameter file(class) into image
+
+implement multiple self-selecting methods of generation?
+
+
+http://eldar.mathstat.uoguelph.ca/dashlock/ftax/root.html
+
+http://classes.yale.edu/fractals/
+
+http://natureofcode.com/book/chapter-8-fractals/
