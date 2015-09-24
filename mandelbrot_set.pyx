@@ -104,3 +104,6 @@ class Mandelbrot():
 
 	def get_zoom(self):
 		return self.zoom*4
+
+	def get_size(self):
+		return self.width, self.height

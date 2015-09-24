@@ -23,7 +23,7 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.initUI()
 
 	def initUI(self):
-		self.fractal = Mandelbrot()
+		self.fractal = Mandelbrot(w=1200, h=800)
 		self.fractal.to_image()
 
 		pixmap = QPixmap('mandelbrot_c.png')
@@ -34,15 +34,19 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 	
 	
 	def showDialog(self, x, y):
-		self.fractal.get_thumbnail(x, y)
+		w, h = self.fractal.get_size()
+		w2 = self.label.size().width()
+		h2 = self.label.size().height()
+		x_coor = x*(w/w2)
+		y_coor = y*(h/h2)
+		self.fractal.get_thumbnail(x_coor, y_coor)
 		pixmap = QPixmap('thumbnail.png')
-		coors = self.fractal.get_coors(x,y)
+		coors = self.fractal.get_coors(x_coor,y_coor)
 		d = Zoom_dialog()
 		d.set_fractal(pixmap)
 		d.set_coors(str(coors))	
 		
 		if d.exec_():
-			print(d.get_zoom())
 			zoom = int(d.get_zoom())*self.fractal.get_zoom()
 			m = Mandelbrot(z=zoom,center=coors)
 			m.to_image()
