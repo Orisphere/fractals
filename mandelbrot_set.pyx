@@ -4,14 +4,6 @@ import numpy as np
 import time
 
 class Mandelbrot():
-	width = 0
-	height = 0
-	it = 0
-	zoom = 0.0
-	center_x = 0.0
-	center_y = 0.0
-	array = []
-	rgb = []
 
 	def __init__(self, w=900, h=600, i=1000, z=1, center=(-0.5,0.0)):
 		self.height = h
@@ -21,7 +13,7 @@ class Mandelbrot():
 		self.center_x = center[0]
 		self.center_y = center[1]
 		self.array = self.generate_array()
-	
+		self.rgb = []	
 	def generate_array(self):
 		
 		cdef int w = self.width 
@@ -101,7 +93,10 @@ class Mandelbrot():
 		x_coor = ((x-0.50*w)/((h/w)*z*w)+c_x)
 		y_coor = ((y-0.50*h)/(z*h)+c_y)
 		return (x_coor, y_coor)
-
+	
+	def get_iter(self, x, y): #x, y are pixel coordinates
+		return self.rgb[y, x]
+	
 	def get_zoom(self):
 		return self.zoom*4
 

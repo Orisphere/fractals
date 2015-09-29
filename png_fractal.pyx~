@@ -5,24 +5,29 @@ import time
 from cython.parallel cimport prange
 from cython.view cimport array as cvarray
 
+class Mandelbrot_set()
+
+	def __init__(self, h, w):
+		self.height = h
+		self.width = w
 
 
 def main():
 	
-	cdef int width = 6000 
-	cdef int height = 4000
+	cdef int w = self.width 
+	cdef int h = self.height
 	cdef double x_coor, y_coor, z_real, z_img, z_2_real
 	cdef int x, y, i	
-	cdef np.ndarray[np.uint8_t, ndim=3] np_img = np.zeros((height, width, 3), dtype=np.uint8)
+	cdef np.ndarray[np.uint8_t, ndim=3] np_img = np.zeros((h, w, 3), dtype=np.uint8)
 	start_time = time.clock()
 
 
-	for x in range(width):
-		x_coor = (x-(4.0/6.0)*width)/((1.0/6.0)*width)
+	for x in range(w):
+		x_coor = (x-(4.0/6.0)*w)/((1.0/6.0)*width)
 
-		for y in range(height):
+		for y in range(h):
 		
-			y_coor = (y-0.50*height)/(0.25*height)
+			y_coor = (y-0.50*h)/(0.25*height)
 			z_real = 0
 			z_img = 0
 				

@@ -35,9 +35,5 @@ class L_system(object):
 
 
 
-aba = L_system({'a': 'aba', 'b':'bbb'}, 'a', 'ab')
-
-aba.successor(10)
 
 
-print(aba.l_string)

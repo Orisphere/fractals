@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="Fractal_label" name="label">
       <property name="text">
        <string>TextLabel</string>
       </property>
@@ -48,6 +48,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Fractal_label</class>
+   <extends>QLabel</extends>
+   <header>fractal_label.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

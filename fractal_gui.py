@@ -6,6 +6,7 @@ from PIL import Image
 from mandelbrot_set import Mandelbrot
 from new_dialog import Zoom_dialog
 from main_design import Ui_MainWindow
+from fractal_label import Fractal_label
 
 
 def to_QImage(fractal):
@@ -23,17 +24,22 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.initUI()
 
 	def initUI(self):
-		self.fractal = Mandelbrot(w=1200, h=800)
+		self.fractal = Mandelbrot(w=300, h=200)
 		self.fractal.to_image()
-
+		
 		pixmap = QPixmap('mandelbrot_c.png')
 		scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)	
+
 		self.label.setPixmap(scaled_pixmap)
 		self.label.setScaledContents(False)
+		
+		self.label.dblclicked.connect(self.showDialog)
+		self.label.moved.connect(self.updateStatusBar)
 		self.show()
 	
-	
-	def showDialog(self, x, y):
+	def showDialog(self):
+		x = self.sender().clickpos.x()
+		y = self.sender().clickpos.y()
 		w, h = self.fractal.get_size()
 		w2 = self.label.size().width()
 		h2 = self.label.size().height()
@@ -53,21 +59,22 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			pixmap = QPixmap('mandelbrot_c.png')
 			self.label.setPixmap(pixmap)
 			self.fractal = m
+ 
+	def updateStatusBar(self):
+		x = self.sender().movepos.x()
+		y = self.sender().movepos.y()
+		w, h = self.fractal.get_size()
+		w2 = self.label.size().width()
+		h2 = self.label.size().height()
+		x_coor = x*(w/w2)
+		y_coor = y*(h/h2)
+		coors = self.fractal.get_coors(x_coor,y_coor)
+		self.statusbar.showMessage(str(coors))
 
 
-
-	def mousePressEvent(self, QMouseEvent):
-		xpos = QMouseEvent.x()
-		ypos = QMouseEvent.y()
-		self.showDialog(xpos, ypos)
-		print (xpos, ypos)
-
-
-def main():
-	app = QApplication(sys.argv)
-	w = Fractal_gui()
-	sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
-	main()	
+	app = QApplication(sys.argv)
+	w = Fractal_gui()
+	sys.exit(app.exec_())

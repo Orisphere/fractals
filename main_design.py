@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label = Fractal_label(self.centralwidget)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -42,5 +42,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "TextLabel"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
-        self.build_fractal.setText(_translate("MainWindow", "Build fractal"))
+        self.build_fractal.setText(_translate("MainWindow", "Open"))
 
+from fractal_label import Fractal_label

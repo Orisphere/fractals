@@ -6,8 +6,6 @@ from cython.parallel cimport prange
 from cython.view cimport array as cvarray
 
 class Mandelbrot_set()
-	width
-	height
 
 	def __init__(self, h, w):
 		self.height = h

@@ -1,9 +1,5 @@
 class L_system(object):
 
-	l_string = []
-	rules = dict()
-	alphabet = ''
-
 	
 	def __init__(self, rule_dict, axiom, abcs):	#dict{str: str}, str, str
 		self.l_string = list(axiom)
