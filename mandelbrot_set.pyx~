@@ -14,6 +14,7 @@ class Mandelbrot():
 		self.center_y = center[1]
 		self.array = self.generate_array()
 		self.rgb = []	
+
 	def generate_array(self):
 		
 		cdef int w = self.width 
@@ -37,7 +38,7 @@ class Mandelbrot():
 				for i in range(iterations):
 				
 					if z_real*z_real+z_img*z_img >= 4:
-						np_img[y-1,x-1] = i
+						np_img[y,x] = i
 				
 						break
 					z_2_real = z_real*z_real-z_img*z_img + x_coor
@@ -57,15 +58,15 @@ class Mandelbrot():
 
 			for y in range(h):
 			
-				i = self.array[y-1, x-1]
+				i = self.array[y, x]
 				if i == 0:
-					rgb[y-1, x-1] = 0, 0, 0
+					rgb[y, x] = 0, 0, 0
 				if 0<i<20:
 					color = i*10
-					rgb[y-1, x-1] = color, 0, 255-color
+					rgb[y, x] = color, 0, 255-color
 				if i>=20:
 					color= i*10%255
-					rgb[y-1, x-1] = 0, 255, color
+					rgb[y, x] = 0, 255, color
 
 		self.rgb = rgb
 		return rgb
@@ -78,7 +79,7 @@ class Mandelbrot():
 		return fractal
 
 	def get_thumbnail(self, x,y):
-		tn = self.rgb[y-70:y+70,x-70:x+70]
+		tn = self.rgb[max(y-70, 0):min(y+70, self.height),max(x-70, 0):min(x+70, self.width]
 		thumbnail = Image.fromarray(tn)
 		thumbnail.save("thumbnail.png")
 		return None
