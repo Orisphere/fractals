@@ -40,6 +40,9 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.label.dblclicked.connect(self.showDialog)
 		self.label.moved.connect(self.updateStatusBar)
 		self.show()
+
+		self.actionUndo.triggered.connect(self.undo)
+		self.actionRedo.triggered.connect(self.redo)
 	
 	def showDialog(self):
 		x = self.sender().clickpos.x()
@@ -71,14 +74,17 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			self.fractal = self.history[self.current_index-1]
 			self.fractal.to_image()
 			pixmap = QPixmap('mandelbrot_c.png')
-			self.label.setPixmap(pixmap)	
+			scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)
+			self.label.setPixmap(scaled_pixmap)	
 			self.current_index -= 1
+	
 	def redo(self):
 		if self.current_index < len(self.history)-1: 
 			self.fractal = self.history[self.current_index+1]
 			self.fractal.to_image()
 			pixmap = QPixmap('mandelbrot_c.png')
-			self.label.setPixmap(pixmap)	
+			scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)
+			self.label.setPixmap(scaled_pixmap)	
 			self.current_index += 1
 
 

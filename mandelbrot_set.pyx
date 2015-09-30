@@ -75,9 +75,16 @@ class Mandelbrot():
 	def to_image(self):
 		
 		fractal = Image.fromarray(self.to_rgb_array())
-		fractal.save("mandelbrot_c.png")
-		return fractal
+		self.image = fractal
+		return None
+	
+	def save_image(self, filename):
+		self.image.save(filename+".png")
+		return None
 
+	def get_image(self):
+		return self.image
+	
 	def get_thumbnail(self, x,y):
 		tn = self.rgb[max(y-70, 0):min(y+70, self.height),
 				max(x-70, 0):min(x+70, self.width)]
