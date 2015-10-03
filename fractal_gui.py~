@@ -1,19 +1,13 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QColorDialog, QDialog, QHBoxLayout,QInputDialog, QLabel, QComboBox, QMainWindow)
-from PyQt5.QtGui import QIcon, QPixmap, QImage
-from PyQt5.QtCore import Qt
 from PIL import Image
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import Qt
 from mandelbrot_set import Mandelbrot
 from new_dialog import Zoom_dialog
 from main_design import Ui_MainWindow
 from fractal_label import Fractal_label
 
-
-def to_QImage(fractal):
-	w, h = fractal.size
-	data = fractal.tobytes()
-	qimage = QImage(data, w, h, QImage.Format_RGB32)
-	return qimage
 
 
 class Fractal_gui(QMainWindow, Ui_MainWindow):
@@ -30,31 +24,34 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.history = []
 		self.history.append(self.fractal)
 		self.current_index = 0
-
-		pixmap = QPixmap('mandelbrot_c.png')
-		scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)	
-
-		self.label.setPixmap(scaled_pixmap)
-		self.label.setScaledContents(False)
 		
+		p = QPixmap()
+		p.loadFromData(Mandelbrot.to_string_object(self.fractal.image))
+		self.label.setScaledContents(False)
+		self.label.set_label(p)
 		self.label.dblclicked.connect(self.showDialog)
 		self.label.moved.connect(self.updateStatusBar)
+	
+		self.actionUndo.triggered.connect(self.undo)
+		self.actionRedo.triggered.connect(self.redo)	
+
 		self.show()
 
-		self.actionUndo.triggered.connect(self.undo)
-		self.actionRedo.triggered.connect(self.redo)
-	
 	def showDialog(self):
 		x = self.sender().clickpos.x()
 		y = self.sender().clickpos.y()
 		w, h = self.fractal.get_size()
 		w2 = self.label.size().width()
 		h2 = self.label.size().height()
+		
 		x_coor = x*(w/w2)
 		y_coor = y*(h/h2)
-		self.fractal.get_thumbnail(x_coor, y_coor)
-		pixmap = QPixmap('thumbnail.png')
+		
+		im = self.fractal.get_thumbnail(x_coor, y_coor)
+		pixmap = QPixmap()
+		pixmap.loadFromData(Mandelbrot.to_string_object(im))
 		coors = self.fractal.get_coors(x_coor,y_coor)
+		
 		d = Zoom_dialog()
 		d.set_fractal(pixmap)
 		d.set_coors(str(coors))	
@@ -63,28 +60,27 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			zoom = int(d.get_zoom())*self.fractal.get_zoom()
 			m = Mandelbrot(z=zoom,center=coors)
 			m.to_image()
-			pixmap = QPixmap('mandelbrot_c.png')
-			self.label.setPixmap(pixmap)
+			p = QPixmap()
+			p.loadFromData(Mandelbrot.to_string_object(m.image))
+			self.label.set_label(p)
 			self.fractal = m
 			self.history.append(m)
 			self.current_index += 1
-			print(self.current_index)
+	
 	def undo(self):
 		if self.current_index > 0: 
 			self.fractal = self.history[self.current_index-1]
-			self.fractal.to_image()
-			pixmap = QPixmap('mandelbrot_c.png')
-			scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)
-			self.label.setPixmap(scaled_pixmap)	
+			p = QPixmap()
+			p.loadFromData(Mandelbrot.to_string_object(self.fractal.image))		
+			self.label.set_label(p)
 			self.current_index -= 1
 	
 	def redo(self):
 		if self.current_index < len(self.history)-1: 
 			self.fractal = self.history[self.current_index+1]
-			self.fractal.to_image()
-			pixmap = QPixmap('mandelbrot_c.png')
-			scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)
-			self.label.setPixmap(scaled_pixmap)	
+			p = QPixmap()
+			p.loadFromData(Mandelbrot.to_string_object(self.fractal.image))		
+			self.label.set_label(p)
 			self.current_index += 1
 
 
@@ -96,6 +92,7 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		h2 = self.label.size().height()
 		x_coor = x*(w/w2)
 		y_coor = y*(h/h2)
+		
 		coors = self.fractal.get_coors(x_coor,y_coor)
 		self.statusbar.showMessage(str(coors))
 

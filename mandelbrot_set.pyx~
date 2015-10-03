@@ -1,6 +1,7 @@
-from PIL import Image
+from io import StringIO
 cimport numpy as np
 import numpy as np
+from PIL import Image, ImageQt
 import time
 
 class Mandelbrot():
@@ -13,7 +14,8 @@ class Mandelbrot():
 		self.center_x = center[0]
 		self.center_y = center[1]
 		self.array = self.generate_array()
-		self.rgb = []	
+		self.rgb = []
+		self.image = None
 
 	def generate_array(self):
 		
@@ -75,23 +77,28 @@ class Mandelbrot():
 	def to_image(self):
 		
 		fractal = Image.fromarray(self.to_rgb_array())
-		fractal.save("mandelbrot_c.png")
-		return fractal
+		self.image = fractal
+		return None
 	
 	def save_image(self, filename):
 		self.image.save(filename+".png")
+		return None
 
-	def get_image(self):
-		return self.image
+	def to_string(self):
+		return self.image.tobytes()
+
+	def to_string_object(image):
+		s = StringIO()
+		image.save(s, format="PNG")
+		return s.getvalue()
 	
 	def get_thumbnail(self, x,y):
 		tn = self.rgb[max(y-70, 0):min(y+70, self.height),
 				max(x-70, 0):min(x+70, self.width)]
 		thumbnail = Image.fromarray(tn)
-		thumbnail.save("thumbnail.png")
-		return None
+		return thumbnail
 
-	def get_coors(self, x, y):
+	def get_coors(self, x, y):	#Converts pixel coors to x,y coors
 		z = self.zoom
 		h = self.height
 		w = self.width
@@ -103,7 +110,7 @@ class Mandelbrot():
 		return (x_coor, y_coor)
 	
 	def get_iter(self, x, y): #x, y are pixel coordinates
-		return self.rgb[y, x]
+		return self.array[y, x]
 	
 	def get_zoom(self):
 		return self.zoom*4
