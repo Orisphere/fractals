@@ -18,17 +18,16 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.initUI()
 
 	def initUI(self):
-		self.fractal = Mandelbrot(w=300, h=200)
-		self.fractal.to_image()
-		
+		fractal = Mandelbrot(w=300, h=200)
+		fractal.to_image()
+		self.label.setScaledContents(False)
+		self.updateLabel(fractal)
+
 		self.history = []
 		self.history.append(self.fractal)
 		self.current_index = 0
 		
-		p = QPixmap()
-		p.loadFromData(Mandelbrot.to_string_object(self.fractal.image))
-		self.label.setScaledContents(False)
-		self.label.set_label(p)
+		
 		self.label.dblclicked.connect(self.showDialog)
 		self.label.moved.connect(self.updateStatusBar)
 	
@@ -60,29 +59,37 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			zoom = int(d.get_zoom())*self.fractal.get_zoom()
 			m = Mandelbrot(z=zoom,center=coors)
 			m.to_image()
-			p = QPixmap()
-			p.loadFromData(Mandelbrot.to_string_object(m.image))
-			self.label.set_label(p)
-			self.fractal = m
-			self.history.append(m)
-			self.current_index += 1
+			self.updateLabel(m)
+			self.updateHistory()	
 	
 	def undo(self):
 		if self.current_index > 0: 
-			self.fractal = self.history[self.current_index-1]
-			p = QPixmap()
-			p.loadFromData(Mandelbrot.to_string_object(self.fractal.image))		
-			self.label.set_label(p)
+			self.updateLabel(self.history[self.current_index-1])
 			self.current_index -= 1
 	
 	def redo(self):
 		if self.current_index < len(self.history)-1: 
-			self.fractal = self.history[self.current_index+1]
-			p = QPixmap()
-			p.loadFromData(Mandelbrot.to_string_object(self.fractal.image))		
-			self.label.set_label(p)
+			self.updateLabel(self.history[self.current_index+1])
 			self.current_index += 1
 
+
+	def updateLabel(self, frac):
+		self.fractal = frac
+
+		p = QPixmap()
+		p.loadFromData(Mandelbrot.to_string_object(frac.image))
+		self.label.set_label(p)
+
+	
+	def updateHistory(self):
+		self.current_index += 1
+
+		if (self.current_index + 1) > len(self.history):
+			self.history.append(self.fractal)
+		else:
+			self.history[self.current_index] = self.fractal
+			del self.history[self.current_index+1:]
+	
 
 	def updateStatusBar(self):
 		x = self.sender().movepos.x()

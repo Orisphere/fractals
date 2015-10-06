@@ -1,4 +1,4 @@
-from io import StringIO
+from io import BytesIO
 cimport numpy as np
 import numpy as np
 from PIL import Image, ImageQt
@@ -16,6 +16,7 @@ class Mandelbrot():
 		self.array = self.generate_array()
 		self.rgb = []
 		self.image = None
+		self.to_image()
 
 	def generate_array(self):
 		
@@ -88,7 +89,7 @@ class Mandelbrot():
 		return self.image.tobytes()
 
 	def to_string_object(image):
-		s = StringIO()
+		s = BytesIO()
 		image.save(s, format="PNG")
 		return s.getvalue()
 	

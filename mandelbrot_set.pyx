@@ -14,8 +14,7 @@ class Mandelbrot():
 		self.center_x = center[0]
 		self.center_y = center[1]
 		self.array = self.generate_array()
-		self.rgb = []
-		self.image = None
+		self.to_image()
 
 	def generate_array(self):
 		
