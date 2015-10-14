@@ -46,8 +46,15 @@
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
    </widget>
+   <widget class="QMenu" name="menuFractal">
+    <property name="title">
+     <string>Fractal</string>
+    </property>
+    <addaction name="incItr"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuFractal"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="build_fractal">
@@ -63,6 +70,11 @@
   <action name="actionRedo">
    <property name="text">
     <string>Redo</string>
+   </property>
+  </action>
+  <action name="incItr">
+   <property name="text">
+    <string>Increase Iterations</string>
    </property>
   </action>
  </widget>

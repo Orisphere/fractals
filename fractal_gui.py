@@ -7,6 +7,7 @@ from mandelbrot_set import Mandelbrot
 from new_dialog import Zoom_dialog
 from main_design import Ui_MainWindow
 from fractal_label import Fractal_label
+from iter_dialog import Iter_dialog
 
 
 
@@ -32,6 +33,8 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 	
 		self.actionUndo.triggered.connect(self.undo)
 		self.actionRedo.triggered.connect(self.redo)	
+		
+	#	self.incItr.triggered.connect(self.iterMenu)
 
 		self.show()
 
@@ -58,7 +61,20 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			zoom = int(d.get_zoom())*self.fractal.get_zoom()
 			m = Mandelbrot(z=zoom,center=coors)
 			self.updateLabel(m)
-			self.updateHistory()	
+			self.updateHistory()
+	
+	def iterMenu(self):
+		current_itr = self.fractal.it
+		d = Iter_dialog()
+		d.set_old_iter(current_iter)
+
+		if d.exec_():
+			iters = d.get_iter()
+			self.fractal.inc_itr(iters)
+			self.fractal.to_rgb_array()
+			self.fractal.to_image()
+			self.updateLabel(self.factal)
+			self.updateHistory()
 	
 	def undo(self):
 		if self.current_index > 0: 
