@@ -54,6 +54,7 @@
      <string>Fractal</string>
     </property>
     <addaction name="incItr"/>
+    <addaction name="actionGet_Info"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -93,6 +94,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionGet_Info">
+   <property name="text">
+    <string>Get Info</string>
    </property>
   </action>
  </widget>

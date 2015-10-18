@@ -5,9 +5,11 @@ from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
 from mandelbrot_set import Mandelbrot
 from new_dialog import Zoom_dialog
-from main_design import Ui_MainWindow
+from main_window import Ui_MainWindow
 from fractal_label import Fractal_label
 from iter_dialog import Iter_dialog
+from save_window import Save_dialog
+from info_window import Info_dialog
 
 
 
@@ -33,9 +35,10 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 	
 		self.actionUndo.triggered.connect(self.undo)
 		self.actionRedo.triggered.connect(self.redo)
-		self.actionExit.triggered.connect(self.
+	#	self.actionExit.triggered.connect(self.quit())
 		self.actionSave_As.triggered.connect(self.saveDialog)
 		self.actionSave.triggered.connect(self.save)
+		self.actionGet_Info.triggered.connect(self.infoDialog)
 		self.incItr.triggered.connect(self.iterMenu)
 
 		self.show()
@@ -72,6 +75,9 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			filename = d.get_filename()
 			self.fractal.save_image(filename)
 
+	def save(self):
+		self.saveDialog()
+
 	
 	def iterMenu(self):
 		current_iter = str(self.fractal.it)
@@ -85,6 +91,25 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			self.fractal.to_image()
 			self.updateLabel(self.fractal)
 			self.updateHistory()
+	
+	def infoDialog(self):
+		x = str(self.fractal.center_x)
+		y = str(self.fractal.center_y)
+		height = str(self.fractal.height)
+		width = str(self.fractal.width)
+	
+		zoom = str(self.fractal.zoom)
+		iters = str(self.fractal.it)
+		center = '(' + x + ', '+ y + ')'
+		size = width + 'x' + height
+		d = Info_dialog()
+		d.center.setText(center)
+		d.iters.setText(iters)
+		d.zoom.setText(zoom)
+		d.dims.setText(size)
+		d.exec_()
+
+		
 	
 	def undo(self):
 		if self.current_index > 0: 
