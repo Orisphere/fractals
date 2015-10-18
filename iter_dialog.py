@@ -6,11 +6,10 @@ class Iter_dialog(QDialog, Ui_Dialog):
 	def __init__(self, parent=None):
 		QDialog.__init__(self, parent)
 		self.setupUi(self)
-		self.iters = self.lineEdit.text()
 
 	def set_old_iter(self, text):
 		self.currentIter = text
 
 	def get_iter(self):
-		return self.iters
+		return self.lineEdit.text()
 

@@ -13,6 +13,9 @@ class Mandelbrot():
 		self.zoom = z*0.25
 		self.center_x = center[0]
 		self.center_y = center[1]
+		self.colors = [[255, 255, 0], [180, 255, 0], [30, 255, 0], [0, 255, 130], 
+				[0, 255, 255], [0, 180, 255], [0, 30, 255], [130, 0, 255],
+				[180, 0, 255], [255, 0, 255]] 
 		self.generate_array()
 		self.to_rgb_array()
 		self.to_image()
@@ -64,13 +67,13 @@ class Mandelbrot():
 			
 				i = self.array[y, x]
 				if i == 0:
-					rgb[y, x] = 0, 0, 0
+					rgb[y, x] = [0, 0, 0]
 				if 0<i<20:
 					color = i*10
-					rgb[y, x] = color, 0, 255-color
+					rgb[y, x] = [color, 0, 255-color]
 				if i>=20:
 					color= i*10%255
-					rgb[y, x] = 0, 255, color
+					rgb[y, x] = [255-color, 255, color]
 
 		self.rgb = rgb
 		return None 
@@ -84,30 +87,28 @@ class Mandelbrot():
 		cdef double x_coor, y_coor, z_real, z_img, z_2_real
 		cdef int x, y, i	
 		cdef int iterations = it
-		cdef int old_it = self.it
 		cdef np.ndarray[np.uint16_t, ndim=2] np_img = self.array 
-		iterable = np.nditer(self.array, flags='multi_index')
+		iterable = np.nditer(self.array, flags=['multi_index'])
 
 		while not iterable.finished:
-			if iterable[0] < old_it:
-				break
-			y, x = iterable.multi_index
-			x_coor = ((x-0.50*w)/((<float>h/w)*z*w)+c_x)
-			y_coor = ((y-0.50*h)/(z*h)+c_y)
-			z_real = 0
-			z_img = 0
+			if iterable[0] == 0: 
+				y, x = iterable.multi_index
+				x_coor = ((x-0.50*w)/((<float>h/w)*z*w)+c_x)
+				y_coor = ((y-0.50*h)/(z*h)+c_y)
+				z_real = 0
+				z_img = 0
+					
+				for i in range(iterations):
 				
-			for i in range(iterations):
-			
-				if z_real*z_real+z_img*z_img >= 4:
-					np_img[y,x] = i
-			
-					break
-				z_2_real = z_real*z_real-z_img*z_img + x_coor
-				z_img =  2*z_real*z_img + y_coor
-				z_real = z_2_real
+					if z_real*z_real+z_img*z_img >= 4:
+						np_img[y,x] = i
+				
+						break
+					z_2_real = z_real*z_real-z_img*z_img + x_coor
+					z_img =  2*z_real*z_img + y_coor
+					z_real = z_2_real
 			iterable.iternext()
-		
+		self.it = it
 		self.array = np_img
 		return None 
 	
@@ -115,7 +116,7 @@ class Mandelbrot():
 
 	def to_image(self):
 		
-		fractal = Image.fromarray(self.array)
+		fractal = Image.fromarray(self.rgb)
 		self.image = fractal
 		return None
 	

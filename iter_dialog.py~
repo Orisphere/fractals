@@ -12,5 +12,5 @@ class Iter_dialog(QDialog, Ui_Dialog):
 		self.currentIter = text
 
 	def get_iter(self):
-		return self.iters
+		return self.lineEdit.text()
 

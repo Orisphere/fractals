@@ -32,8 +32,10 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.label.moved.connect(self.updateStatusBar)
 	
 		self.actionUndo.triggered.connect(self.undo)
-		self.actionRedo.triggered.connect(self.redo)	
-		
+		self.actionRedo.triggered.connect(self.redo)
+		self.actionExit.triggered.connect(self.
+		self.actionSave_As.triggered.connect(self.saveDialog)
+		self.actionSave.triggered.connect(self.save)
 		self.incItr.triggered.connect(self.iterMenu)
 
 		self.show()
@@ -63,17 +65,25 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			self.updateLabel(m)
 			self.updateHistory()
 	
+	def saveDialog(self):
+		d = Save_dialog()
+
+		if d.exec_():
+			filename = d.get_filename()
+			self.fractal.save_image(filename)
+
+	
 	def iterMenu(self):
-		current_itr = self.fractal.it
+		current_iter = str(self.fractal.it)
 		d = Iter_dialog()
-		d.set_old_iter(current_iter)
+		d.currentItr.setText(current_iter)
 
 		if d.exec_():
 			iters = d.get_iter()
-			self.fractal.inc_itr(iters)
+			self.fractal.inc_itr(int (iters))
 			self.fractal.to_rgb_array()
 			self.fractal.to_image()
-			self.updateLabel(self.factal)
+			self.updateLabel(self.fractal)
 			self.updateHistory()
 	
 	def undo(self):
