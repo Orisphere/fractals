@@ -8,8 +8,9 @@ from new_dialog import Zoom_dialog
 from main_window import Ui_MainWindow
 from fractal_label import Fractal_label
 from iter_dialog import Iter_dialog
-from save_window import Save_dialog
-from info_window import Info_dialog
+from save_dialog import Save_dialog
+from info_dialog import Info_dialog
+from create_dialog import Create_dialog
 
 
 
@@ -39,6 +40,7 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		self.actionSave_As.triggered.connect(self.saveDialog)
 		self.actionSave.triggered.connect(self.save)
 		self.actionGet_Info.triggered.connect(self.infoDialog)
+	#	self.actionCreate.triggered.connect(self.createDialog)
 		self.incItr.triggered.connect(self.iterMenu)
 
 		self.show()
@@ -74,6 +76,12 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		if d.exec_():
 			filename = d.get_filename()
 			self.fractal.save_image(filename)
+	
+	def createDialog(self):
+		d = Create_dialog()
+
+		if d.exec_():
+			print("hi")
 
 	def save(self):
 		self.saveDialog()
@@ -91,6 +99,7 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 			self.fractal.to_image()
 			self.updateLabel(self.fractal)
 			self.updateHistory()
+
 	
 	def infoDialog(self):
 		x = str(self.fractal.center_x)
@@ -138,6 +147,10 @@ class Fractal_gui(QMainWindow, Ui_MainWindow):
 		else:
 			self.history[self.current_index] = self.fractal
 			del self.history[self.current_index+1:]
+
+		if len(self.history) > 10:
+			self.history = self.history[self.current_index-9:]
+			self.current_index = len(self.history)-1
 	
 
 	def updateStatusBar(self):

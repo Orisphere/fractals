@@ -15,14 +15,14 @@ class Fractal_label(QLabel):
 		self.movepos = event.pos()
 		self.moved.emit()
 		if event.buttons() == Qt.LeftButton:
-			print(event.oldPos())
+		#	print(event.oldPos())
 	
 	def mouseDoubleClickEvent(self, event):
 		self.clickpos = event.pos()
 		self.dblclicked.emit()
 
 	
-	def setPixmap(self, pixmap):
+	def set_label(self, pixmap):
 		scaled_pixmap = pixmap.scaled(900, 600, aspectRatioMode=Qt.KeepAspectRatio)	
 		self.setPixmap(scaled_pixmap)
 

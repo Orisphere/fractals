@@ -49,6 +49,8 @@ class Ui_MainWindow(object):
         self.actionExit.setObjectName("actionExit")
         self.actionGet_Info = QtWidgets.QAction(MainWindow)
         self.actionGet_Info.setObjectName("actionGet_Info")
+        self.actionCreate = QtWidgets.QAction(MainWindow)
+        self.actionCreate.setObjectName("actionCreate")
         self.menuFile.addAction(self.build_fractal)
         self.menuFile.addAction(self.actionSave_As)
         self.menuFile.addAction(self.actionSave)
@@ -57,6 +59,7 @@ class Ui_MainWindow(object):
         self.menuEdit.addAction(self.actionRedo)
         self.menuFractal.addAction(self.incItr)
         self.menuFractal.addAction(self.actionGet_Info)
+        self.menuFractal.addAction(self.actionCreate)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuFractal.menuAction())
@@ -79,5 +82,6 @@ class Ui_MainWindow(object):
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionGet_Info.setText(_translate("MainWindow", "Get Info"))
+        self.actionCreate.setText(_translate("MainWindow", "Create"))
 
 from fractal_label import Fractal_label

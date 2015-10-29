@@ -55,6 +55,7 @@
     </property>
     <addaction name="incItr"/>
     <addaction name="actionGet_Info"/>
+    <addaction name="actionCreate"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -99,6 +100,11 @@
   <action name="actionGet_Info">
    <property name="text">
     <string>Get Info</string>
+   </property>
+  </action>
+  <action name="actionCreate">
+   <property name="text">
+    <string>Create</string>
    </property>
   </action>
  </widget>

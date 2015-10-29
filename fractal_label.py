@@ -14,8 +14,8 @@ class Fractal_label(QLabel):
 	def mouseMoveEvent(self, event):
 		self.movepos = event.pos()
 		self.moved.emit()
-		if event.buttons() == Qt.LeftButton:
-			print(event.oldPos())
+	#if event.buttons() == Qt.LeftButton:
+		#	print(event.oldPos())
 	
 	def mouseDoubleClickEvent(self, event):
 		self.clickpos = event.pos()

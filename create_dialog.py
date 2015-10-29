@@ -1,7 +1,7 @@
-from ui_save_dialog import Ui_Save_dialog
+from ui_create_dialog import Ui_Create_dialog
 from PyQt5.QtWidgets import QDialog
 
-class Save_dialog(QDialog, Ui_Save_dialog):
+class Create_dialog(QDialog, Ui_Create_dialog):
 
 	def __init__(self, parent=None):
 		QDialog.__init__(self, parent)
